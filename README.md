@@ -27,7 +27,7 @@ Use O-Lir when you need to:
 
 ## Core command groups
 
-O-Lir is organized into these main groups in `tournament_commands.py`: `/tournament setup`, `/tournament entry`, `/tournament seeding`, `/tournament bracket`, and `/tournament admin`. fileciteturn73file0
+O-Lir is organized into these main groups in `tournament_commands.py`: `/tournament setup`, `/tournament entry`, `/tournament seeding`, `/tournament bracket`, and `/tournament admin`. 
 
 ---
 
@@ -37,7 +37,7 @@ Tournament creation now includes seeding and tiebreak configuration in addition 
 
 ## Required tournament creation fields
 
-The admin create command currently takes the normal tournament fields such as name, category, entrant type, seeding race count, swiss round count, and top cut size, and is intended to be expanded to include the seeding method, seeding drop count, and standings tiebreak method as required configuration. The tournament model and service now support storing `seeding_method`, `seeding_drop_count`, and `standings_tiebreak_method`. fileciteturn73file0turn74file0turn75file0
+The admin create command currently takes the normal tournament fields such as name, category, entrant type, seeding race count, swiss round count, and top cut size, and is intended to be expanded to include the seeding method, seeding drop count, and standings tiebreak method as required configuration. The tournament model and service now support storing `seeding_method`, `seeding_drop_count`, and `standings_tiebreak_method`. 
 
 ## Seeding method
 
@@ -52,7 +52,7 @@ Supported methods in the seeding service are:
 - `percent_difference`
 - `z_sum`
 - `z_percentile`
-- `zipfs_law` fileciteturn75file0
+- `zipfs_law` 
 
 ## Seeding drop count
 
@@ -63,7 +63,7 @@ Typical values are:
 - `0`
 - `1`
 
-The patched seeding logic applies `tournament.seeding_drop_count` through a shared `_drop_lowest(...)` helper before final aggregation. fileciteturn75file0
+The patched seeding logic applies `tournament.seeding_drop_count` through a shared `_drop_lowest(...)` helper before final aggregation.
 
 ## Standings tiebreak method
 
@@ -75,13 +75,13 @@ Recommended supported values are:
 - `sonneborn_berger`
 - `buchholz_then_sonneborn_berger`
 
-The tournament model and service were prepared for this field so standings logic can use it instead of assuming one fixed rule forever. fileciteturn74file0
+The tournament model and service were prepared for this field so standings logic can use it instead of assuming one fixed rule forever.
 
 ---
 
 # Seeding method explanations
 
-These methods are implemented over O-Lir's current data model, which stores approved race submissions as times per entrant per race. That means these are time-based adaptations of common tournament seeding approaches, not scorecard-style multi-map judge systems. The implementation lives in `SeedingService.compute_seeds()` and its helper methods. fileciteturn75file0
+These methods are implemented over O-Lir's current data model, which stores approved race submissions as times per entrant per race. That means these are time-based adaptations of common tournament seeding approaches, not scorecard-style multi-map judge systems. The implementation lives in `SeedingService.compute_seeds()` and its helper methods.
 
 ## Baja Special
 
@@ -96,7 +96,7 @@ How it works:
 5. Convert each entrant's race into a score using `(2 - entrant_time / par_sum) * 100`.
 6. Clamp the score to a minimum positive floor for completed runs.
 7. Drop the configured number of worst race contributions.
-8. Sum the best remaining scores, currently preserving the existing behavior of using the top two remaining contributions. fileciteturn75file0
+8. Sum the best remaining scores, currently preserving the existing behavior of using the top two remaining contributions. 
 
 Use Baja Special when:
 
@@ -114,7 +114,7 @@ How it works:
 2. Convert placement into a percent-like value based on field size.
 3. Higher placement means a higher contribution.
 4. Drop the configured number of lowest contributions.
-5. Average the remaining contributions. fileciteturn75file0
+5. Average the remaining contributions. 
 
 Use it when:
 
@@ -132,7 +132,7 @@ How it works:
 2. Assign placement numbers.
 3. Lower placements are better, so the implementation stores them as negative values so better placements still sort higher in the final score system.
 4. Drop the configured number of worst placements.
-5. Sum the remaining placement contributions. fileciteturn75file0
+5. Sum the remaining placement contributions. 
 
 Use it when:
 
@@ -150,7 +150,7 @@ How it works:
 2. Convert each entrant's result into `fastest / entrant_time * 100`.
 3. Faster runs produce higher percentages.
 4. Drop the configured number of worst race contributions.
-5. Average the remaining percentages. fileciteturn75file0
+5. Average the remaining percentages.
 
 Use it when:
 
@@ -168,7 +168,7 @@ How it works:
 2. Compute each entrant's percent behind first.
 3. Convert that into a higher-is-better contribution by subtracting from 100.
 4. Drop the configured number of worst contributions.
-5. Average the remaining contributions. fileciteturn75file0
+5. Average the remaining contributions.
 
 Use it when:
 
@@ -187,7 +187,7 @@ How it works:
 3. Convert each entrant's transformed value into a z-score.
 4. Missing runs get a score worse than the worst present value.
 5. Drop the configured number of worst contributions.
-6. Sum the remaining z-scores. fileciteturn75file0
+6. Sum the remaining z-scores. 
 
 Use it when:
 
@@ -206,7 +206,7 @@ How it works:
 3. Transform that percentile using the inverse normal distribution.
 4. Missing runs get a very low fallback percentile.
 5. Drop the configured number of worst contributions.
-6. Sum the remaining z-percentile contributions. fileciteturn75file0
+6. Sum the remaining z-percentile contributions.
 
 Use it when:
 
@@ -225,7 +225,7 @@ How it works:
 3. First is worth the most, second is half that, third is a third, and so on.
 4. Missing runs get zero.
 5. Drop the configured number of worst contributions.
-6. Sum the remaining contributions. fileciteturn75file0
+6. Sum the remaining contributions.
 
 Use it when:
 
@@ -254,7 +254,7 @@ Use it when:
 - you want standings to reward a harder schedule
 - you run swiss and need a common competitive tiebreak
 
-The current standings display in `TournamentBracketGroup.standings` already shows Buchholz as part of standings output. fileciteturn73file0
+The current standings display in `TournamentBracketGroup.standings` already shows Buchholz as part of standings output.
 
 ## Sonneborn-Berger
 
@@ -271,7 +271,7 @@ Use it when:
 - you want to reward wins over stronger opponents
 - you want a secondary tiebreak after match points
 
-The current standings display also exposes Sonneborn-Berger in the output list. fileciteturn73file0
+The current standings display also exposes Sonneborn-Berger in the output list.
 
 ## Buchholz then Sonneborn-Berger
 
@@ -294,7 +294,7 @@ Use it when:
 
 ## `/tournament setup`
 
-This group is for player self-service profile setup. It is implemented in `TournamentSetupGroup`. fileciteturn73file0
+This group is for player self-service profile setup. It is implemented in `TournamentSetupGroup`.
 
 ### `/tournament setup speedgaming`
 
@@ -332,7 +332,7 @@ Use it when:
 
 ## `/tournament entry`
 
-This group is for entrant registration and self-management. It is implemented in `TournamentEntryGroup`. fileciteturn73file0
+This group is for entrant registration and self-management. It is implemented in `TournamentEntryGroup`.
 
 ### `/tournament entry signup`
 
@@ -349,7 +349,7 @@ Checks include:
 - tournament exists
 - tournament allows singles
 - player is not already entered
-- player has a SpeedGaming profile on file fileciteturn73file0turn74file0
+- player has a SpeedGaming profile on file
 
 ### `/tournament entry signup_team`
 
@@ -361,7 +361,7 @@ Use it when:
 - both players have finished SpeedGaming setup
 - registration is open
 
-It also stores per-member identity rows for downstream Lightbringer use. fileciteturn73file0
+It also stores per-member identity rows for downstream Lightbringer use.
 
 ### `/tournament entry withdraw`
 
@@ -392,7 +392,7 @@ Use it when:
 
 ## `/tournament seeding`
 
-This group handles async seed distribution and submission review. It is implemented in `TournamentSeedingGroup`. fileciteturn73file0turn75file0
+This group handles async seed distribution and submission review. It is implemented in `TournamentSeedingGroup`.
 
 ### `/tournament seeding upload_async_seed`
 
@@ -495,7 +495,7 @@ Use it when:
 
 ### `/tournament seeding compute_seeds`
 
-Calculates official seeds for the tournament using approved submissions and the selected seeding method. The command currently calls `SeedingService.compute_seeds(tournament_id)` and then writes seeds back to entrants. fileciteturn73file0turn75file0
+Calculates official seeds for the tournament using approved submissions and the selected seeding method. The command currently calls `SeedingService.compute_seeds(tournament_id)` and then writes seeds back to entrants.
 
 Use it when:
 
@@ -505,7 +505,7 @@ Use it when:
 
 ## `/tournament bracket`
 
-This group handles standings, pairing visibility, result management, and advancement. It is implemented in `TournamentBracketGroup`. fileciteturn73file0
+This group handles standings, pairing visibility, result management, and advancement. It is implemented in `TournamentBracketGroup`.
 
 ### `/tournament bracket matches`
 
@@ -574,7 +574,7 @@ Use it when:
 
 ### `/tournament bracket standings`
 
-Displays standings including match points, Buchholz, Sonneborn-Berger, and seed data in the current implementation. fileciteturn73file0
+Displays standings including match points, Buchholz, Sonneborn-Berger, and seed data in the current implementation.
 
 Use it when:
 
@@ -593,7 +593,7 @@ Use it when:
 
 ### `/tournament bracket open_match_thread`
 
-Opens a Discord scheduling thread for an existing pairing. The implementation now uses `ThreadService.build_pairing_thread_body(...)`, stores thread context, and stores the starter message ID for later refresh. fileciteturn73file0turn61file0
+Opens a Discord scheduling thread for an existing pairing. The implementation now uses `ThreadService.build_pairing_thread_body(...)`, stores thread context, and stores the starter message ID for later refresh. 
 
 Use it when:
 
@@ -602,8 +602,7 @@ Use it when:
 
 ## `/tournament admin`
 
-This group covers tournament setup and staff overrides. It is implemented in `TournamentAdminGroup`. fileciteturn73file0
-
+This group covers tournament setup and staff overrides. It is implemented in `TournamentAdminGroup`. 
 ### `/tournament admin create`
 
 Creates a tournament.
@@ -653,7 +652,7 @@ The internal pairing routes support:
 
 - lookup by thread ID
 - linking a Lightbringer match ID to a pairing
-- reporting Lightbringer results back into O-Lir fileciteturn61file0
+- reporting Lightbringer results back into O-Lir
 
 Use this integration when:
 
