@@ -746,5 +746,3 @@ It owns:
 - scheduling threads
 - bracket progression
 - internal API for Lightbringer synchronization
-
-If Lightbringer is the live match operations bot, O-Lir is the system that decides what the tournament actually is.
